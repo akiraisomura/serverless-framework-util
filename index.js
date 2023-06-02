@@ -12,13 +12,15 @@ class ServerlessDeployNotifier {
   }
 
   beforeDeployTask() {
+    const stage = this.serverless.service.provider.stage
     const functionName = this.serverless.service.serviceObject.name;
-    const text = `[Lambda] "${functionName}" deployment started.`
+    const text = `[Lambda] "${functionName}-${stage}" deployment started.`
     this.postSlack(text, "warning")
   }
   afterDeployTask() {
+    const stage = this.serverless.service.provider.stage
     const functionName = this.serverless.service.serviceObject.name;
-    const text = `[Lambda] "${functionName}" deployment finished.`
+    const text = `[Lambda] "${functionName}-${stage}" deployment finished.`
     this.postSlack(text, "good")
   }
   postSlack(text, color) {

@@ -24,7 +24,7 @@ class ServerlessDeployNotifier {
   postSlack(text, color) {
     const environment = this.serverless.service.custom.environment
     const message = {
-      text: environment.TEXT,
+      text: text || environment.TEXT,
       channel: environment.CHANNEL,
       username: environment.USER_NAME,
       icon_emoji: environment.ICON_EMOJI,

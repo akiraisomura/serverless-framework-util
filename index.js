@@ -1,4 +1,5 @@
 const { IncomingWebhook } = require('@slack/webhook');
+require('dotenv').config();
 
 class ServerlessDeployNotifier {
   constructor(serverless, options) {
@@ -24,15 +25,14 @@ class ServerlessDeployNotifier {
     this.postSlack(text, "good")
   }
   postSlack(text, color) {
-    const environment = this.serverless.service.custom.environment
     const message = {
-      text: text || environment.TEXT,
-      channel: environment.CHANNEL,
-      username: environment.USER_NAME,
-      icon_emoji: environment.ICON_EMOJI,
+      text: text || process.env.TEXT,
+      channel: process.env.CHANNEL,
+      username: process.env.USER_NAME,
+      icon_emoji: process.env.ICON_EMOJI,
       color: color,
     };
-    const webhook = new IncomingWebhook(environment.SLACK_URL);
+    const webhook = new IncomingWebhook(process.env.SLACK_URL);
 
     webhook.send(message)
       .then(() => {

@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/akiraisomura/serverless-framework-util#readme",
   "dependencies": {
-    "@slack/webhook": "^6.1.0"
+    "@slack/webhook": "^6.1.0",
+    "dotenv": "^16.3.1"
   }
 }

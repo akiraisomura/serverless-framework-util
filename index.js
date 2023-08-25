@@ -10,6 +10,14 @@ class ServerlessDeployNotifier {
       'before:deploy:deploy': this.beforeDeployTask.bind(this),
       'after:deploy:deploy': this.afterDeployTask.bind(this),
     };
+
+    this.config = {};
+    for (const key in process.env) {
+      if (key.startsWith('SLS_DEPLOY_NOTIFIER_')) {
+        const originalKey = key.replace('SLS_DEPLOY_NOTIFIER_', '');
+        this.config[originalKey] = process.env[key];
+      }
+    }
   }
 
   beforeDeployTask() {
@@ -25,14 +33,15 @@ class ServerlessDeployNotifier {
     this.postSlack(text, "good")
   }
   postSlack(text, color) {
+    const { TEXT, CHANNEL, USER_NAME, ICON_EMOJI, SLACK_URL } = this.config;
     const message = {
-      text: text || process.env.TEXT,
-      channel: process.env.CHANNEL,
-      username: process.env.USER_NAME,
-      icon_emoji: process.env.ICON_EMOJI,
+      text: text || TEXT,
+      channel: CHANNEL,
+      username: USER_NAME,
+      icon_emoji: ICON_EMOJI,
       color: color,
     };
-    const webhook = new IncomingWebhook(process.env.SLACK_URL);
+    const webhook = new IncomingWebhook(SLACK_URL);
 
     webhook.send(message)
       .then(() => {
